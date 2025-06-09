@@ -202,10 +202,14 @@
 }
 
 /* Responsive */
-@media (max-width: 908px) {
+@media (max-width: 1024px) {
   #fad-foreground {
     flex-wrap: wrap;
     align-content: center;
+  }
+  
+  #fad-art {
+    max-width: 320px !important;
   }
 
   #fad-details {
