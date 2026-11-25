@@ -721,6 +721,8 @@ body.video-full-screen.video-full-screen--hide-ui {
     componentDidMount() {
       this.themeMounted = true;
       this.mountTheme();
+      this.layoutObserver = new ResizeObserver(() => this.updateVerticalLayout());
+      this.observeVerticalLayout();
       this.updateInfo = this.fetchInfo.bind(this);
       Spicetify.Player.addEventListener("songchange", this.updateInfo);
       this.updateInfo();
@@ -770,9 +772,48 @@ body.video-full-screen.video-full-screen--hide-ui {
       window.dispatchEvent(new Event("fad-request"));
     }
 
+    componentDidUpdate() {
+      this.observeVerticalLayout();
+    }
+
+    observeVerticalLayout() {
+      const foreground = document.getElementById("fad-foreground");
+      const details = document.getElementById("fad-details");
+      if (!foreground || !details || !this.layoutObserver) return;
+
+      // Observe the content as well, so wrapping and font loads still trigger a
+      // resize when the details panel has reached its scrollable height limit.
+      for (const element of [foreground, details, ...details.children]) {
+        this.layoutObserver.observe(element);
+      }
+      this.updateVerticalLayout();
+    }
+
+    updateVerticalLayout() {
+      const foreground = document.getElementById("fad-foreground");
+      const details = document.getElementById("fad-details");
+      if (!foreground?.classList.contains("fad-vertical") || !details) return;
+
+      const css = getComputedStyle(foreground);
+      // Themes opt in when their artwork extends beyond the album image.
+      if (!css.getPropertyValue("--fad-art-overflow-scale").trim()) return;
+      const pixels = (property) => parseFloat(css.getPropertyValue(property)) || 0;
+      const width = foreground.clientWidth - pixels("padding-left") - pixels("padding-right");
+      const height = foreground.clientHeight - pixels("padding-top") - pixels("padding-bottom");
+      const gap = pixels("--fad-vertical-gap");
+      // Reserve the same space above and below the disc to keep its center on
+      // the canvas, while leaving room for the actual details below it.
+      const diameter = Math.max(0, Math.min(width, height - 2 * (details.scrollHeight + gap)));
+      const value = `${diameter}px`;
+      if (foreground.style.getPropertyValue("--fad-vertical-disc-size") !== value) {
+        foreground.style.setProperty("--fad-vertical-disc-size", value);
+      }
+    }
+
     componentWillUnmount() {
       this.themeMounted = false;
       this.themeCleanup?.();
+      this.layoutObserver?.disconnect();
       Spicetify.Player.removeEventListener("songchange", this.updateInfo);
       Spicetify.Platform.PlayerAPI._events.removeListener(
         "queue_update",

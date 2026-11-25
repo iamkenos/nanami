@@ -200,36 +200,53 @@
 }
 
 #fad-foreground.fad-vertical {
+  --fad-art-overflow-scale: 1.7;
+  --fad-vertical-gap: 16px;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) clamp(220px, 36vh, 360px);
+  /* Equal outer rows keep the disc at the center of the canvas. */
+  grid-template-rows: minmax(0, 1fr) var(--fad-vertical-disc-size, 0px) minmax(0, 1fr);
   grid-template-columns: minmax(0, 1fr);
   align-content: stretch;
-  align-items: stretch;
+  align-items: start;
   justify-items: center;
+  box-sizing: border-box;
+  padding: clamp(12px, 2vmin, 32px);
+  min-width: 0;
   flex-wrap: nowrap;
+  transform: none !important;
 }
 
 #fad-foreground.fad-vertical #fad-art {
-  grid-row: 1;
-  align-self: end;
-  width: clamp(150px, 30vh, 340px);
-  max-width: min(340px, 80vw) !important;
-  margin: clamp(12px, 3vh, 32px) 0 clamp(60px, 11vh, 120px);
-  flex: 0 0 auto;
+  grid-row: 2;
+  align-self: center;
+  width: calc(var(--fad-vertical-disc-size, 0px) / var(--fad-art-overflow-scale));
+  height: calc(var(--fad-vertical-disc-size, 0px) / var(--fad-art-overflow-scale));
+  min-width: 0;
+  max-width: none !important;
+  margin: 0;
+}
+
+#fad-foreground.fad-vertical #fad-art-image {
+  padding-bottom: 0;
 }
 
 #fad-foreground.fad-vertical #fad-details {
-  grid-row: 2;
+  grid-row: 3;
   align-items: center;
-  width: min(90vw, 680px);
-  max-width: 90%;
-  height: 100%;
+  width: min(100%, 680px);
+  max-width: 100% !important;
+  height: max-content;
+  max-height: calc(100% - var(--fad-vertical-gap));
   min-height: 0;
   box-sizing: border-box;
   justify-content: flex-start;
   overflow-y: auto;
-  margin-top: 0;
-  padding: clamp(8px, 1vh, 12px) 0 4px;
+  margin-top: var(--fad-vertical-gap);
+  padding: 0;
+}
+
+#fad-foreground.fad-vertical #fad-details > * {
+  flex-shrink: 0;
 }
 
 #fad-foreground.fad-vertical #fad-title {
@@ -262,13 +279,6 @@
 #fad-foreground.fad-vertical #fad-progress-container {
   order: 1;
   width: 100%;
-}
-
-@media (max-height: 520px) {
-  #fad-foreground.fad-vertical #fad-art {
-    width: clamp(90px, 22vh, 120px);
-    margin: 8px 0 36px;
-  }
 }
 
 /* Full App Display - song preview */
