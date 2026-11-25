@@ -21,7 +21,8 @@ spicetify backup apply
 - Run
 
    ```
-   spicetify config current_theme <theme name>
+   SPT_THEME_NAME=<theme name>
+   spicetify config current_theme $SPT_THEME_NAME
    spicetify config inject_css 1
    spicetify config inject_theme_js 0
    spicetify config extensions full-app-display.js
