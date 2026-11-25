@@ -340,10 +340,10 @@
 
 #fad-theme-artwork .modoludens-background {
   position: fixed;
-  left: -25%;
+  left: -50%;
   top: -5%;
-  width: 150%;
-  height: 99%;
+  width: 200%;
+  height: 100%;
   pointer-events: none;
   background-color: var(--fad-svg-fill);
   opacity: var(--fad-svg-opacity);
