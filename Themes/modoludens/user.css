@@ -1,0 +1,410 @@
+/** modified from turntable theme **/
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --round-value: 50%;
+  --main-blur-backdrop: blur(20px) saturate(180%);
+  --shine: conic-gradient(
+    from 15deg,
+    transparent,
+    #222 45deg,
+    transparent 90deg 180deg,
+    #222 225deg,
+    transparent 270deg 360deg
+  );
+}
+
+#fad-body {
+  --fad-background-color: light-dark(#e8ecef, #1c1f24);
+  --fad-svg-fill: light-dark(#5a646e, #aab2bd);
+  --fad-svg-opacity: 0.45;
+  --fad-content-color: light-dark(#2b3137, #e6e9ed);
+  --fad-icon-hover-color: light-dark(#2b3137, #e6e9ed);
+  --fad-font-body: "Quicksand", sans-serif;
+  --fad-font-header: "Geist", sans-serif;
+  --fad-font-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+  --fad-theme-id: modoludens;
+  --fad-theme-script-file: modoludens-theme.js;
+}
+
+.main-nowPlayingWidget-coverArt {
+  background-color: #000000;
+}
+
+.main-nowPlayingWidget-coverArt .cover-art.shadow,
+.main-nowPlayingWidget-coverArt .cover-art-image {
+  border-radius: var(--round-value);
+}
+
+.main-nowPlayingWidget-coverArt > .cover-art {
+  clip-path: circle(50% at 50% 50%);
+}
+
+.main-nowPlayingWidget-coverArt .cover-art-image {
+  border: 2px solid #aaa;
+}
+
+/* Full App Display */
+#full-app-display {
+  font-family: var(--fad-font-body) !important;
+}
+
+#fad-background {
+  display: none;
+}
+
+#fad-art,
+#fad-art-image,
+#fad-art-inner {
+  border-radius: var(--round-value) !important;
+}
+
+#fad-art {
+  max-width: 350px !important;
+  margin: 80px 100px;
+  position: relative;
+}
+
+#fad-art-image {
+  box-shadow: 0 0 10px rgba(3, 3, 3, 0.5) inset;
+}
+
+#fad-art-inner {
+  display: none;
+}
+
+#fad-art::before,
+#fad-art::after {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  content: "";
+}
+
+#fad-art::before {
+  box-shadow: 0 0 5px #0a0a0a inset, 0 0 5px #000;
+  transform: scale(1.6);
+  pointer-events: none;
+  background: var(--shine),
+    repeating-radial-gradient(
+      circle,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0.9) 3px,
+      rgba(0, 0, 0, 0) 3px
+    ),
+    radial-gradient(#333, #000);
+}
+
+#fad-art::after {
+  background-color: rgba(60, 60, 60, 0.3);
+  transform: scale(1.7);
+  z-index: -1;
+}
+
+#fad-details {
+  max-width: 520px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+#fad-details #fad-title {
+  font-size: 32px;
+  font-family: var(--fad-font-body, inherit);
+  font-weight: 500;
+}
+
+#fad-details #fad-artist {
+  order: -1;
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-family: var(--fad-font-header, inherit);
+  font-weight: 400;
+}
+
+#fad-details #fad-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-family: var(--fad-font-body, inherit);
+  font-size: 14px;
+}
+
+#fad-details #fad-meta > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+#fad-details #fad-meta.has-divider #fad-release-date {
+  border-left: 1px solid
+    color-mix(in srgb, var(--fad-content-color) 25%, transparent);
+  padding-left: 16px;
+}
+
+#fad-details #fad-artist > *,
+#fad-details #fad-meta > div > *,
+#fad-details #fad-status > #fad-controls > * > svg {
+  vertical-align: middle;
+}
+
+#fad-details #fad-artist > svg {
+  width: 24px;
+  height: 24px;
+}
+
+#fad-details #fad-meta > div > svg {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+#fad-play > svg {
+  width: 24px;
+  height: 24px;
+}
+
+#fad-progress-container {
+  font-size: 12px;
+}
+
+#fad-progress-container > span {
+  font-family: var(--fad-font-mono, monospace);
+  font-size: 8px;
+}
+
+#fad-elapsed,
+#fad-duration {
+  min-width: 32px !important;
+}
+
+#fad-progress {
+  height: 4px !important;
+}
+
+#fad-foreground.fad-horizontal #fad-controls {
+  margin: 0;
+}
+
+#fad-foreground.fad-horizontal #fad-controls > button:first-child {
+  padding-left: 0;
+}
+
+#fad-foreground.fad-vertical {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) clamp(220px, 36vh, 360px);
+  grid-template-columns: minmax(0, 1fr);
+  align-content: stretch;
+  align-items: stretch;
+  justify-items: center;
+  flex-wrap: nowrap;
+}
+
+#fad-foreground.fad-vertical #fad-art {
+  grid-row: 1;
+  align-self: end;
+  width: clamp(150px, 30vh, 340px);
+  max-width: min(340px, 80vw) !important;
+  margin: clamp(12px, 3vh, 32px) 0 clamp(60px, 11vh, 120px);
+  flex: 0 0 auto;
+}
+
+#fad-foreground.fad-vertical #fad-details {
+  grid-row: 2;
+  align-items: center;
+  width: min(90vw, 680px);
+  max-width: 90%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  overflow-y: auto;
+  margin-top: 0;
+  padding: clamp(8px, 1vh, 12px) 0 4px;
+}
+
+#fad-foreground.fad-vertical #fad-title {
+  font-size: clamp(14px, 2.8vh, 30px);
+  text-align: center;
+}
+
+#fad-foreground.fad-vertical #fad-artist {
+  font-size: clamp(12px, 2vh, 18px);
+  text-align: center;
+}
+
+#fad-foreground.fad-vertical #fad-meta {
+  justify-content: center;
+  width: 100%;
+  font-size: clamp(12px, 1.8vh, 14px);
+}
+
+#fad-foreground.fad-vertical #fad-status {
+  margin: clamp(4px, 1vh, 12px) auto 0;
+}
+
+#fad-foreground.fad-vertical #fad-controls {
+  order: 2;
+  margin-top: clamp(12px, 1.5vh, 18px);
+  align-self: center;
+  justify-content: center;
+}
+
+#fad-foreground.fad-vertical #fad-progress-container {
+  order: 1;
+  width: 100%;
+}
+
+@media (max-height: 520px) {
+  #fad-foreground.fad-vertical #fad-art {
+    width: clamp(90px, 22vh, 120px);
+    margin: 8px 0 36px;
+  }
+}
+
+/* Full App Display - song preview */
+.song-preview {
+  width: 100%;
+  padding: 0 10%;
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.song-preview > button {
+  font-size: 14px;
+  color: var(--fad-content-color) !important;
+  background-color: unset;
+  border: unset;
+}
+
+.song-preview > button:hover {
+  color: var(--fad-content-color) !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  #fad-foreground {
+    flex-wrap: wrap;
+    align-content: center;
+  }
+
+  #fad-foreground.fad-vertical {
+    align-content: stretch;
+  }
+
+  #fad-art {
+    max-width: 320px !important;
+  }
+
+  #fad-details {
+    padding-top: 50px;
+  }
+}
+
+@media (min-width: 1460px) and (min-height: 960px) {
+  #fad-foreground,
+  .main-trackCreditsModal-container {
+    transform: scale(1.2) !important;
+  }
+
+  .song-preview > button {
+    font-size: 16px;
+  }
+}
+
+/* Rotate turntable */
+.main-nowPlayingWidget-coverArt > .cover-art,
+#fad-art {
+  animation: rotate-cover_img 24s linear infinite;
+}
+
+@keyframes rotate-cover_img {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#fad-theme-artwork .modoludens-background {
+  position: fixed;
+  left: -25%;
+  top: -5%;
+  width: 150%;
+  height: 99%;
+  pointer-events: none;
+  background-color: var(--fad-svg-fill);
+  opacity: var(--fad-svg-opacity);
+  -webkit-mask-image: url("modoludens-background.svg");
+  mask-image: url("modoludens-background.svg");
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  mask-mode: alpha;
+}
+
+#fad-foreground {
+  position: relative;
+  z-index: 2;
+}
+
+#fad-theme-artwork .modoludens-ludens {
+  position: absolute;
+  pointer-events: none;
+  width: 25%;
+  aspect-ratio: 679.20782 / 821.27552;
+  bottom: 2.5%;
+  right: 2.5%;
+}
+
+#fad-theme-artwork .modoludens-ludens::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--fad-svg-fill);
+  opacity: var(--fad-svg-opacity);
+  -webkit-mask: var(--modoludens-ludens-mask) center / contain no-repeat;
+  mask: var(--modoludens-ludens-mask) center / contain no-repeat;
+  mask-mode: alpha;
+}
+
+#fad-art-image::before {
+  content: "";
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #151515;
+  border-radius: 50%;
+  box-shadow: inset 0 0 3px #000;
+}
+
+#fad-art-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
