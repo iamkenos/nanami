@@ -1,4 +1,6 @@
 /** modified from turntable theme **/
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Merriweather:wght@400;700&display=swap");
+
 @font-face {
   font-family: "Raleway";
   src: url("https://fonts.gstatic.com/s/raleway/v34/1Ptxg8zYS_SKggPN4iEgvnHyvveLxVvaorCIPrE.woff2")
@@ -16,6 +18,19 @@
     #222 225deg,
     transparent 270deg 360deg
   );
+}
+
+#fad-body {
+  --fad-background-color: light-dark(#e4ebe8, #152522);
+  --fad-svg-fill: light-dark(#50695f, #b4ccc1);
+  --fad-svg-opacity: 0.45;
+  --fad-content-color: light-dark(#233c34, #f0f4f1);
+  --fad-icon-hover-color: light-dark(#2d4741, #c1e0d3);
+  --fad-font-body: "Raleway", sans-serif;
+  --fad-font-header: "Merriweather", Georgia, serif;
+  --fad-font-mono: "Geist Mono", "SFMono-Regular", Consolas, monospace;
+  --fad-theme-id: dandelionwishing;
+  --fad-theme-script-file: dandelionwishing-theme.js;
 }
 
 .main-nowPlayingWidget-coverArt {
@@ -37,7 +52,7 @@
 
 /* Full App Display */
 #full-app-display {
-  font-family: Raleway !important;
+  font-family: var(--fad-font-body) !important;
 }
 
 #fad-background {
@@ -97,24 +112,52 @@
 
 #fad-details {
   max-width: 520px !important;
+  display: flex;
+  flex-direction: column;
 }
 
 #fad-details #fad-title {
   font-size: 32px;
+  font-family: var(--fad-font-body, inherit);
+  font-weight: 500;
 }
 
 #fad-details #fad-artist {
-  margin-top: 10px;
+  order: -1;
+  margin: 0 0 8px;
   font-size: 24px;
+  font-family: var(--fad-font-header, inherit);
+  font-weight: 400;
 }
 
-#fad-details #fad-album {
-  margin-top: 6px;
-  font-size: 16px;
+#fad-details #fad-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-family: var(--fad-font-body, inherit);
+  font-size: 14px;
+}
+
+#fad-details #fad-meta > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+#fad-details #fad-meta.has-divider #fad-release-date {
+  border-left: 1px solid
+    color-mix(in srgb, var(--fad-content-color) 25%, transparent);
+  padding-left: 16px;
 }
 
 #fad-details #fad-artist > *,
-#fad-details #fad-album > *,
+#fad-details #fad-meta > div > *,
 #fad-details #fad-status > #fad-controls > * > svg {
   vertical-align: middle;
 }
@@ -124,11 +167,11 @@
   height: 24px;
 }
 
-#fad-details #fad-album > svg {
+#fad-details #fad-meta > div > svg {
+  flex: 0 0 auto;
   width: 16px;
   height: 16px;
-  margin-left: 4px;
-  margin-right: 9px;
+  margin: 0;
 }
 
 #fad-play > svg {
@@ -140,6 +183,11 @@
   font-size: 12px;
 }
 
+#fad-progress-container > span {
+  font-family: var(--fad-font-mono, monospace);
+  font-size: 8px;
+}
+
 #fad-elapsed,
 #fad-duration {
   min-width: 32px !important;
@@ -147,37 +195,86 @@
 
 #fad-progress {
   height: 4px !important;
-  background-color: rgba(100, 100, 100, 0.5) !important;
 }
 
-/* Full App Display - heart */
-.fad-heart-container {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
+#fad-foreground.fad-horizontal #fad-controls {
+  margin: 0;
+}
+
+#fad-foreground.fad-horizontal #fad-controls > button:first-child {
+  padding-left: 0;
+}
+
+#fad-foreground.fad-vertical {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) clamp(220px, 36vh, 360px);
+  grid-template-columns: minmax(0, 1fr);
+  align-content: stretch;
+  align-items: stretch;
+  justify-items: center;
+  flex-wrap: nowrap;
+}
+
+#fad-foreground.fad-vertical #fad-art {
+  grid-row: 1;
+  align-self: end;
+  width: clamp(150px, 30vh, 340px);
+  max-width: min(340px, 80vw) !important;
+  margin: clamp(12px, 3vh, 32px) 0 clamp(60px, 11vh, 120px);
+  flex: 0 0 auto;
+}
+
+#fad-foreground.fad-vertical #fad-details {
+  grid-row: 2;
   align-items: center;
+  width: min(90vw, 680px);
+  max-width: 90%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  overflow-y: auto;
+  margin-top: 0;
+  padding: clamp(8px, 1vh, 12px) 0 4px;
 }
 
-.fad-heart {
-  width: 55px;
-  height: 55px;
-  padding: unset !important;
-  background-color: unset;
-  border: unset;
+#fad-foreground.fad-vertical #fad-title {
+  font-size: clamp(14px, 2.8vh, 30px);
+  text-align: center;
 }
 
-.fad-heart svg {
-  fill: #ccc;
+#fad-foreground.fad-vertical #fad-artist {
+  font-size: clamp(12px, 2vh, 18px);
+  text-align: center;
 }
 
-.fad-heart svg:hover,
-.fad-heart.checked svg {
-  fill: var(--spotify-main-color);
+#fad-foreground.fad-vertical #fad-meta {
+  justify-content: center;
+  width: 100%;
+  font-size: clamp(12px, 1.8vh, 14px);
 }
 
-#fad-heart {
-  margin-top: 10px;
+#fad-foreground.fad-vertical #fad-status {
+  margin: clamp(4px, 1vh, 12px) auto 0;
+}
+
+#fad-foreground.fad-vertical #fad-controls {
+  order: 2;
+  margin-top: clamp(12px, 1.5vh, 18px);
+  align-self: center;
+  justify-content: center;
+}
+
+#fad-foreground.fad-vertical #fad-progress-container {
+  order: 1;
+  width: 100%;
+}
+
+@media (max-height: 520px) {
+  #fad-foreground.fad-vertical #fad-art {
+    width: clamp(90px, 22vh, 120px);
+    margin: 8px 0 36px;
+  }
 }
 
 /* Full App Display - song preview */
@@ -192,13 +289,13 @@
 
 .song-preview > button {
   font-size: 14px;
-  color: #ccc !important;
+  color: var(--fad-content-color) !important;
   background-color: unset;
   border: unset;
 }
 
 .song-preview > button:hover {
-  color: #fff !important;
+  color: var(--fad-content-color) !important;
 }
 
 /* Responsive */
@@ -206,6 +303,10 @@
   #fad-foreground {
     flex-wrap: wrap;
     align-content: center;
+  }
+
+  #fad-foreground.fad-vertical {
+    align-content: stretch;
   }
   
   #fad-art {
@@ -302,23 +403,35 @@
 }
 
 @keyframes sway {
-  0% {
-    transform: rotate(0deg) translateX(0px);
+  0%,
+  100% {
+    transform: rotate(-1.25deg);
   }
   50% {
-    transform: rotate(-1.5deg) translateX(-0.5px);
-  }
-  100% {
-    transform: rotate(1.5deg) translateX(0.5px);
+    transform: rotate(1.25deg);
   }
 }
 
-#fad-bg {
-  position: fixed;
-  top: auto;
+#fad-theme-artwork .dandelionwishing-background {
+  position: absolute;
+  left: 0;
   bottom: 0;
-  width: 100%;
-  max-height: 99%;
+  width: min(100vw, 1254px, 148.4vh);
+  aspect-ratio: 1254 / 836;
+  pointer-events: none;
+  background-color: var(--fad-svg-fill);
+  opacity: var(--fad-svg-opacity);
+  transform-origin: 12% 100%;
+  animation: sway 10s infinite ease-in-out;
+  -webkit-mask-image: url("dandelionwishing-background.svg");
+  mask-image: url("dandelionwishing-background.svg");
+  -webkit-mask-position: left bottom;
+  mask-position: left bottom;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  mask-mode: alpha;
 }
 
 #fad-foreground {
@@ -326,64 +439,149 @@
   z-index: 2;
 }
 
-#fad-bg > svg {
-  animation: sway 10s infinite alternate ease-in-out;
-}
-
-.bg-seed {
-  position: fixed;
+.dandelionwishing-seed {
+  position: absolute;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 1;
+  opacity: var(--fad-svg-opacity);
 }
 
-#fad-bg-sloth {
-  position: fixed;
-  transform: translate(-50%, -50%);
+.dandelionwishing-seed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--fad-svg-fill);
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  mask-mode: alpha;
+}
+
+.dandelionwishing-seeds {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
-  z-index: 1;
+}
+
+.dandelionwishing-seed-track {
+  position: absolute;
+  left: var(--seed-origin-x);
+  top: var(--seed-start);
+  animation: dandelionwishing-seed-drift var(--seed-duration) linear
+    var(--seed-delay) infinite;
+}
+
+.dandelionwishing-seed-track i {
+  display: block;
+  width: clamp(12px, 1.2vw, 20px);
+  aspect-ratio: 48 / 72;
+  background-color: var(--fad-svg-fill);
+  opacity: var(--fad-svg-opacity);
+  -webkit-mask: url("dandelionwishing-floating-seed.svg") center / contain
+    no-repeat;
+  mask: url("dandelionwishing-floating-seed.svg") center / contain no-repeat;
+  mask-mode: alpha;
+  animation: dandelionwishing-seed-turn 8s ease-in-out infinite alternate;
+}
+
+@keyframes dandelionwishing-seed-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(50vw, var(--seed-drift), 0);
+  }
+  100% {
+    transform: translate3d(calc(100vw + 80px), 0, 0);
+  }
+}
+
+@keyframes dandelionwishing-seed-turn {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(12deg);
+  }
+}
+
+#fad-theme-artwork .dandelionwishing-sloth {
+  position: absolute;
+  pointer-events: none;
   width: 15%;
+  aspect-ratio: 679.20782 / 821.27552;
   bottom: 5%;
   right: 5%;
-  transform: scaleX(-1);
 }
 
-.fad-bg-sloth-label {
+#fad-theme-artwork .dandelionwishing-sloth::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--fad-svg-fill);
+  opacity: var(--fad-svg-opacity);
+  -webkit-mask: var(--dandelionwishing-sloth-mask) center / contain no-repeat;
+  mask: var(--dandelionwishing-sloth-mask) center / contain no-repeat;
+  transform: scaleX(-1);
+  mask-mode: alpha;
+}
+
+.dandelionwishing-sloth-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  margin: 0;
   text-align: right;
-  transform: scaleX(-1);
+  color: var(--fad-content-color);
+  font-family: var(--fad-font-body, inherit);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
-#fad-bg-seed1 {
+#fad-theme-artwork .dandelionwishing-seed--one {
   width: 8%;
+  aspect-ratio: 216.5753 / 279.14242;
   top: 15%;
   left: 55%;
+  transform-origin: center;
 }
 
-#fad-bg-seed2 {
+#fad-theme-artwork .dandelionwishing-seed--two {
   width: 7%;
+  aspect-ratio: 274.24237 / 241.02684;
   top: 55%;
   left: 70%;
 }
 
-#fad-bg-seed3 {
+#fad-theme-artwork .dandelionwishing-seed--three {
   width: 6%;
+  aspect-ratio: 102.48933 / 41.602347;
   top: 15%;
   left: 40%;
 }
 
-#fad-bg-seed1 svg {
+#fad-theme-artwork .dandelionwishing-seed--one::before {
+  -webkit-mask-image: url("dandelionwishing-seed-1.svg");
+  mask-image: url("dandelionwishing-seed-1.svg");
   animation: drift1 12s linear infinite;
-  animation-delay: 0s;
 }
 
-#fad-bg-seed2 svg {
+#fad-theme-artwork .dandelionwishing-seed--two::before {
+  -webkit-mask-image: url("dandelionwishing-seed-2.svg");
+  mask-image: url("dandelionwishing-seed-2.svg");
   animation: drift2 6s linear infinite;
-  animation-delay: 0s;
 }
 
-#fad-bg-seed3 svg {
+#fad-theme-artwork .dandelionwishing-seed--three::before {
+  -webkit-mask-image: url("dandelionwishing-seed-3.svg");
+  mask-image: url("dandelionwishing-seed-3.svg");
   animation: drift1 9s linear infinite;
-  animation-delay: 0s;
 }
 
 #fad-art-image::before {
@@ -409,4 +607,10 @@
   border-radius: 50%;
   pointer-events: none;
   mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dandelionwishing-seeds {
+    display: none;
+  }
 }
