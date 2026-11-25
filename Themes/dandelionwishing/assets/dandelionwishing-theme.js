@@ -41,12 +41,13 @@
         return seed;
       });
 
+      let displayText = "dandelionwishing";
       const sloth = document.createElement("div");
       sloth.className = "dandelionwishing-sloth";
 
       if (themeScriptUrl) {
         const slothImage = new Image();
-        const extensions = ["svg", "png"];
+        const extensions = ["png", "svg"];
         let extensionIndex = 0;
         const loadSlothImage = () => {
           const extension = extensions[extensionIndex];
@@ -55,9 +56,14 @@
             themeScriptUrl
           ).href;
           slothImage.onload = () => {
+            sloth.dataset.format = extension;
             sloth.style.setProperty(
-              "--dandelionwishing-sloth-mask",
+              "--dandelionwishing-sloth-asset",
               `url("${imageUrl}")`
+            );
+            sloth.style.setProperty(
+              "--dandelionwishing-sloth-aspect-ratio",
+              `${slothImage.naturalWidth} / ${slothImage.naturalHeight}`
             );
           };
           slothImage.onerror = () => {
@@ -71,6 +77,9 @@
             );
           };
           slothImage.src = imageUrl;
+          if (imageUrl.includes("svg")) {
+            displayText = "slothyludens";
+          }
         };
         loadSlothImage();
       } else {
@@ -81,7 +90,7 @@
 
       const label = document.createElement("p");
       label.className = "dandelionwishing-sloth-label";
-      label.textContent = "slothyludens";
+      label.textContent = displayText;
       sloth.append(label);
 
       root.replaceChildren(background, floatingSeeds, ...seeds, sloth);

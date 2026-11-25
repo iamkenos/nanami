@@ -513,7 +513,10 @@
   position: absolute;
   pointer-events: none;
   width: 15%;
-  aspect-ratio: 679.20782 / 821.27552;
+  aspect-ratio: var(
+    --dandelionwishing-sloth-aspect-ratio,
+    679.20782 / 821.27552
+  );
   bottom: 5%;
   right: 5%;
 }
@@ -522,12 +525,28 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-color: var(--fad-svg-fill);
   opacity: var(--fad-svg-opacity);
-  -webkit-mask: var(--dandelionwishing-sloth-mask) center / contain no-repeat;
-  mask: var(--dandelionwishing-sloth-mask) center / contain no-repeat;
   transform: scaleX(-1);
+}
+
+#fad-theme-artwork .dandelionwishing-sloth[data-format="svg"]::before {
+  background-color: var(--fad-svg-fill);
+  -webkit-mask: var(--dandelionwishing-sloth-asset) center / contain no-repeat;
+  mask: var(--dandelionwishing-sloth-asset) center / contain no-repeat;
   mask-mode: alpha;
+}
+
+#fad-theme-artwork .dandelionwishing-sloth[data-format="png"] {
+  width: 20%;
+}
+
+
+#fad-theme-artwork .dandelionwishing-sloth[data-format="png"]::before {
+  background-image: var(--dandelionwishing-sloth-asset);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 1;
 }
 
 .dandelionwishing-sloth-label {
